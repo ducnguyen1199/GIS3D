@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      input {
+        display: block;
+        width: 100%;
+        font-size: 16px;
+        padding: 5px;
+        margin-bottom: 10px;
+      }
+      select {
+        display: inline-block;
+        width: 100px;
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+      img {
+        width: 200px;
+      }
+      button {
+        display: inline-block;
+        padding: 5 10px;
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="form">
+      <input type="text" id="A" placeholder="A" />
+      <input type="text" id="B" placeholder="B" />
+      <input type="text" id="numPart" placeholder="numPart" />
+      <br />
+      <button type="submit">submit</button>
+    </form>
+    <hr />
+    <h3>Result</h3>
+    <div id="rs"></div>
+  </body>
+  <script>
+    const calSubPoints = (startPoint, endPoint, numPart) => {
+      let subPoints = [];
+      let dx = (endPoint[0] - startPoint[0]) / numPart;
+      let dy = (endPoint[1] - startPoint[1]) / numPart;
+      for (let i = 1; i < numPart; i++)
+        subPoints.push([startPoint[0] + i * dx, startPoint[1] + i * dy]);
+      return [startPoint, ...subPoints, endPoint];
+    };
+
+    function stringToArr(str) {
+      return str.replace('[', '').replace(']', '').split(', ');
+    }
+
+    document.getElementById('form').onsubmit = (e) => {
+      e.preventDefault();
+
+      var A = stringToArr(document.getElementById('A').value);
+
+      var B = stringToArr(document.getElementById('B').value);
+      var numPart = +document.getElementById('numPart').value;
+      A[0] = +A[0];
+      A[1] = +A[1];
+      B[0] = +B[0];
+      B[1] = +B[1];
+      var subPoints = calSubPoints(A, B, numPart);
+
+      var content = subPoints.reduce(
+        (text, item, index) => (text += `Point ${index}: ${item}<br/>`),
+        ''
+      );
+      document.getElementById('rs').innerHTML = content;
+    };
+  </script>
+</html>
