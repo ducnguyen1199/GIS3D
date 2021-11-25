@@ -91,31 +91,32 @@
             roof.forEach((item) => {
               createPolygon(item.points, item.height, item.color);
             });
+            blocks.forEach((block) => {
+              const { surfaces } = block;
+              surfaces.forEach((surface) => {
+                createPolygon(surface.points, surface.height, surface.color);
 
-            const { surfaces } = blocks;
-            surfaces.forEach((surface) => {
-              createPolygon(surface.points, surface.height, surface.color);
+                const { floors, middleLine } = surface;
 
-              const { floors, middleLine } = surface;
-
-              //floor
-              floors?.forEach((floor) => {
-                //create object
-                const { walls, doors, middleLine } = floor;
-                walls?.forEach((wall) => {
-                  createPolygon(wall.points, wall.height, wall.color);
+                //floor
+                floors?.forEach((floor) => {
+                  //create object
+                  const { walls, doors, middleLine } = floor;
+                  walls?.forEach((wall) => {
+                    createPolygon(wall.points, wall.height, wall.color);
+                  });
+                  doors?.forEach((door) => {
+                    createPolygon(door.points, door.height, door.color);
+                  });
                 });
-                doors?.forEach((door) => {
-                  createPolygon(door.points, door.height, door.color);
-                });
+                //middleLine
+                middleLine &&
+                  createPolygon(
+                    middleLine.points,
+                    middleLine.height,
+                    middleLine.color
+                  );
               });
-              //middleLine
-              middleLine &&
-                createPolygon(
-                  middleLine.points,
-                  middleLine.height,
-                  middleLine.color
-                );
             });
           });
       });

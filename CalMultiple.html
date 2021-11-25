@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      input {
+        display: block;
+        width: 100%;
+        font-size: 16px;
+        padding: 5px;
+        margin-bottom: 10px;
+      }
+      select {
+        display: inline-block;
+        width: 100px;
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+      img {
+        width: 200px;
+      }
+      button {
+        display: inline-block;
+        padding: 5 10px;
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="form">
+      <input type="text" id="A" placeholder="A" />
+      <input type="text" id="distance" placeholder="distance" />
+      <p>Vector</p>
+      <input type="text" id="O1" placeholder="O1" />
+      <input type="text" id="O2" placeholder="O2" />
+      <label>isRotate: </label>
+      <select id="isRotate">
+        <option value="" selected>false</option>
+        <option value="true">true</option>
+      </select>
+     
+      <br>
+      <button type="submit">submit</button>
+      
+    </form>
+    <hr>
+    <h3>Result</h3>
+    <button onclick="copy()">Copy</button> <span id="mess"></span>
+    <input id="CD"></input>
+  </body>
+  <script>
+    function calB(A, O, distance, isRotate) {
+      A[0] *= 10 ** 6;
+      A[1] *= 10 ** 6;
+      O[0] *= 10 ** 6;
+      O[1] *= 10 ** 6;
+      var B = [];
+
+      var temp = Math.sqrt(
+        Math.abs(distance ** 2 /(1 -  (O[1]/O[0])**2 ))
+      );
+
+      B[0] = (isRotate ? -temp : temp) + A[0];
+      B[1] = (O[1]/O[0])*(B[0] - A[0]) + A[1];
+
+      B[0] /= 10 ** 6;
+      B[1] /= 10 ** 6;
+      B[2] = +A[2]
+      return B;
+    }
+
+    function stringToArr(str){
+      return str.replace('[', '')
+        .replace(']', '')
+        .split(', ')
+    }
+
+    document.getElementById('form').onsubmit = (e) => {
+      e.preventDefault();
+
+      var A = document.getElementById('A').value;
+
+        var arrPoints = A.split('[');
+        arrPoints.splice(0, 1);
+        var arrPoints = arrPoints.map((item)=> item.slice(0,item.indexOf(']')));
+
+      var O1 = stringToArr(document.getElementById('O1').value);
+      var O2 = stringToArr(document.getElementById('O2').value);
+
+      var O = [O2[0] - O1[0],O2[1] - O1[1]];
+      
+      var distance = +document.getElementById('distance').value;
+      var isRotate = Boolean(document.getElementById('isRotate').value);
+
+      var cont = arrPoints.reduce((content, point )=> {
+        var A = point.split(', ');
+        var B = calB([...A], [...O], distance, isRotate);
+        return content += `[${B}],`;
+      },'');
+     document.getElementById('CD').value = cont;
+    };
+
+    function copy() {
+      var copyText = document.getElementById('CD');
+
+      copyText.select();
+      copyText.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(copyText.value);
+
+      document.getElementById("mess").innerHTML = "Copied!!"
+      setTimeout(()=>{
+        document.getElementById("mess").innerHTML = ""
+      }, 500)
+    }
+  </script>
+</html>
