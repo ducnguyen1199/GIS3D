@@ -80,52 +80,39 @@
           graphicsLayer.add(polygonGraphic);
         }
 
-        //create Foundation
-        const fd1 = [
-          [106.69525036854375, 10.777439394786926, 15],
-          [106.6958296228114, 10.77690980012879, 15],
-          [106.69564771432609, 10.776710834324252, 15],
-          [106.6955518159557, 10.776798511507014, 15],
-          [106.69558104641723, 10.776830482808316, 15],
-          [106.69546522998012, 10.776935348242986, 15],
-          [106.695326562816, 10.776785354425362, 15],
-          [106.69536038940274, 10.776756082775604, 15],
-          [106.69516856195087, 10.776546087143391, 15],
-          [106.69493595731674, 10.776758567535412, 15],
-          [106.69512778476862, 10.776968563167625, 15],
-          [106.69516138477954, 10.776938059185138, 15],
-          [106.69530005194365, 10.777088053002764, 15],
-          [106.69519522843066, 10.777184087503715, 15],
-          [106.69516628074535, 10.777152115950507, 15],
-          [106.69506874283468, 10.777240428730483, 15],
-        ];
-        createPolygon(fd1, 5, [139, 128, 104]);
-        const fd2 = [
-          [106.69506249527167, 10.776733570753038, 15],
-          [106.69513880270429, 10.776665422949632, 15],
-          [106.6952013060672, 10.776735410108653, 15],
-          [106.69512499863458, 10.776803557912059, 15],
-        ];
-        createPolygon(fd2, 5.1, [229, 229, 229]);
-
         fetch('./index.json')
           .then((response) => response.json())
           .then((obj) => {
-            const { block } = obj;
-            //create surfaces
-            const { surfaces } = block;
+            const { blocks, foundation } = obj;
+            //create foundation
+            foundation.forEach((item) => {
+              createPolygon(item.points, item.height, item.color);
+            });
 
+            const { surfaces } = blocks;
             surfaces.forEach((surface) => {
               createPolygon(surface.points, surface.height, surface.color);
 
-              //create object
-              const { walls, doors } = surface;
-              walls?.forEach((wall) => {
-                createPolygon(wall.points, wall.height, wall.color);
+              const { floors, middleLine } = surface;
+
+              //floor
+              floors?.forEach((floor) => {
+                //create object
+                const { walls, doors, middleLine } = floor;
+                walls?.forEach((wall) => {
+                  createPolygon(wall.points, wall.height, wall.color);
+                });
+                doors?.forEach((door) => {
+                  createPolygon(door.points, door.height, door.color);
+                });
               });
-              doors?.forEach((door) => {
-                createPolygon(door.points, door.height, door.color);
-              });
+              //middleLine
+              middleLine &&
+                createPolygon(
+                  middleLine.points,
+                  middleLine.height,
+                  middleLine.color
+                );
             });
           });
       });
