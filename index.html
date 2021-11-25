@@ -86,15 +86,15 @@
             const { blocks, foundation, roof } = obj;
             //create foundation
             foundation.forEach((item) => {
-              createPolygon(item.points, item.height, item.color);
+              createPolygon(item.nodes, item.height, item.color);
             });
             roof.forEach((item) => {
-              createPolygon(item.points, item.height, item.color);
+              createPolygon(item.nodes, item.height, item.color);
             });
             blocks.forEach((block) => {
               const { surfaces } = block;
               surfaces.forEach((surface) => {
-                createPolygon(surface.points, surface.height, surface.color);
+                createPolygon(surface.nodes, surface.height, surface.color);
 
                 const { floors, middleLine } = surface;
 
@@ -103,16 +103,16 @@
                   //create object
                   const { walls, doors, middleLine } = floor;
                   walls?.forEach((wall) => {
-                    createPolygon(wall.points, wall.height, wall.color);
+                    createPolygon(wall.nodes, wall.height, wall.color);
                   });
                   doors?.forEach((door) => {
-                    createPolygon(door.points, door.height, door.color);
+                    createPolygon(door.nodes, door.height, door.color);
                   });
                 });
                 //middleLine
                 middleLine &&
                   createPolygon(
-                    middleLine.points,
+                    middleLine.nodes,
                     middleLine.height,
                     middleLine.color
                   );
