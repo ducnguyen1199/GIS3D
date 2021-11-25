@@ -7,7 +7,8 @@
 # Point caculations:
  - CalC.html: dùng tính 2 điểm còn lại để tạo hình khối
  - CalB.html: dùng tính điểm B khi có điểm A, khoản cách và vector
- - Subpoints: dùng để chia những điểm con ở giữa A và B
+ - Subpoints.html: dùng để chia những điểm con ở giữa A và B
+ - CalMultiple.html: dùng để chuyển nguyên khối ra vị trí khác
  
 # Specifications:
 ### Móng:
