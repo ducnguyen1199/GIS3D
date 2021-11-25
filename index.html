@@ -83,9 +83,12 @@
         fetch('./index.json')
           .then((response) => response.json())
           .then((obj) => {
-            const { blocks, foundation } = obj;
+            const { blocks, foundation, roof } = obj;
             //create foundation
             foundation.forEach((item) => {
+              createPolygon(item.points, item.height, item.color);
+            });
+            roof.forEach((item) => {
               createPolygon(item.points, item.height, item.color);
             });
 
